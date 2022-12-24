@@ -9,9 +9,10 @@ export const PublicScore = async (req: Request, res: Response) => {
     const user = await userRepository
       .createQueryBuilder("user")
       .leftJoinAndSelect("user.scores", "score")
-      .select('AVG(score.pac)', 'averageScore')
-      .orderBy("score.id", "DESC")
-      .getRawMany()
+      .where("user.role!= 'ADMIN' ")
+      .andWhere("user.role!= 'COACH' ")
+      .orderBy("score.createdAt", "DESC")
+      .getMany()
 
   console.log(user)
   if (user) {
